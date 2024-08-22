@@ -20,12 +20,20 @@ router.get("/", async (req, res, next) => {
 
 router.post("/", auth, async (req, res, next) => {
     try {
-        const {
-            name } = req.body;
-        const newAmenity = await createAmenity(
-            name);
+        if (!req.body.name) {
+            res.status(400).json({ message: "Bad request" });
+        } else {
+            const {
+                name } = req.body;
+            const newAmenity = await createAmenity(
+                name);
+            if (newAmenity) {
 
-        res.status(201).json(newAmenity);
+                res.status(201).json(newAmenity);
+            } else {
+                res.status(200).json("Cannot create property")
+            }
+        }
     } catch (error) {
         next(error);
     }

@@ -19,18 +19,26 @@ router.get("/", async (req, res, next) => {
 
 router.post("/", auth, async (req, res, next) => {
     try {
-        const {
-            userId,
-            propertyId,
-            rating,
-            comment } = req.body;
-        const newReview = await createReview(
-            userId,
-            propertyId,
-            rating,
-            comment);
-
-        res.status(201).json(newReview);
+        if (!req.body.userId || !req.body.propertyId || !req.body.rating || !req.body.comment) {
+            res.status(400).json("message: Bad request");
+        } else {
+            const {
+                userId,
+                propertyId,
+                rating,
+                comment } = req.body;
+            const newReview = await createReview(
+                userId,
+                propertyId,
+                rating,
+                comment);
+            if (newReview) {
+                res.status(201).json(newReview);
+            }
+            else {
+                res.status(200).json("message: Review cannot be created")
+            }
+        }
     } catch (error) {
         next(error);
     }

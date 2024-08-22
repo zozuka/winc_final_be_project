@@ -7,7 +7,7 @@ const getProperties = async (location, pricePerNight) => {
             location,
             pricePerNight
         }
-    })
+    });
 }
 
 export default getProperties;

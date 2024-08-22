@@ -13,8 +13,12 @@ const createHost = async (username, password, name, email, phoneNumber, profileP
             aboutMe
         }
     });
+    if (!host) {
+        return null;
+    } else {
+        return host;
+    }
 
-    return host;
 };
 
 export default createHost;

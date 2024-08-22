@@ -17,8 +17,10 @@ const createProperty = async (title, description, location, pricePerNight, bedro
             rating
         }
     });
-
-    return property;
-};
-
+    if (!property) {
+        return null;
+    } else {
+        return property;
+    };
+}
 export default createProperty;

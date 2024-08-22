@@ -11,6 +11,7 @@ const router = Router();
 router.get("/", async (req, res, next) => {
     try {
         const { location, pricePerNight } = req.query;
+        req.query.pricePerNight = parseFloat(req.query.pricePerNight);
         const properties = await getProperties(location, pricePerNight);
         res.status(200).json(properties);
     } catch (error) {
@@ -20,28 +21,37 @@ router.get("/", async (req, res, next) => {
 
 router.post("/", auth, async (req, res, next) => {
     try {
-        const {
-            title,
-            description,
-            location,
-            pricePerNight,
-            bedroomCount,
-            bathRoomCount,
-            maxGuestCount,
-            hostId,
-            rating } = req.body;
-        const newProperty = await createProperty(
-            title,
-            description,
-            location,
-            pricePerNight,
-            bedroomCount,
-            bathRoomCount,
-            maxGuestCount,
-            hostId,
-            rating);
+        if (!req.body.title || !req.body.description || !req.body.location || !req.body.pricePerNight || !req.body.bedroomCount || !req.body.bathRoomCount || !req.body.maxGuestCount || !req.body.hostId || !req.body.rating) {
+            res.status(400).json({ message: "Bad request" });
+        } else {
+            const {
+                title,
+                description,
+                location,
+                pricePerNight,
+                bedroomCount,
+                bathRoomCount,
+                maxGuestCount,
+                hostId,
+                rating } = req.body;
+            const newProperty = await createProperty(
+                title,
+                description,
+                location,
+                pricePerNight,
+                bedroomCount,
+                bathRoomCount,
+                maxGuestCount,
+                hostId,
+                rating);
 
-        res.status(201).json(newProperty);
+            if (newProperty) {
+
+                res.status(201).json(newProperty);
+            } else {
+                res.status(200).json("Cannot create property");
+            }
+        }
     } catch (error) {
         next(error);
     }

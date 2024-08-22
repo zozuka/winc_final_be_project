@@ -17,8 +17,11 @@ const createBooking = async (userId, propertyId, checkinDate, checkoutDate, numb
             bookingStatus
         }
     });
-
-    return booking;
+    if (!booking) {
+        return null;
+    } else {
+        return booking;
+    }
 };
 
 export default createBooking;

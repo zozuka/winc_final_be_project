@@ -37,8 +37,8 @@ model Booking {
   totalPrice     Int
   bookingStatus  String
 
-  user     User     @relation(fields: [userId], references: [id])
-  property Property @relation(fields: [propertyId], references: [id])
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  property Property @relation(fields: [propertyId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
   @@index([userId])
   @@index([propertyId])
@@ -51,8 +51,8 @@ model Review {
   rating     Int
   comment    String
 
-  user     User     @relation(fields: [userId], references: [id])
-  property Property @relation(fields: [propertyId], references: [id])
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  property Property @relation(fields: [propertyId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
   @@index([userId])
   @@index([propertyId])
@@ -66,14 +66,14 @@ model Property {
   pricePerNight Decimal @db.Decimal(10, 2)
   bedroomCount  Int
   bathRoomCount Int
-  maxGuestCount Int
+  maxGuestCount Int     @db.UnsignedInt
   hostId        String
   rating        Int
 
   amenities Amenity[]
   bookings  Booking[]
   reviews   Review[]
-  host      Host      @relation(fields: [hostId], references: [id])
+  host      Host      @relation(fields: [hostId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
   @@index([hostId])
 }

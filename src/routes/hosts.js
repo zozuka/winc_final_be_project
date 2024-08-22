@@ -20,25 +20,33 @@ router.get("/", async (req, res, next) => {
 
 router.post("/", auth, async (req, res, next) => {
     try {
-        const {
-            username,
-            password,
-            name,
-            email,
-            phoneNumber,
-            profilePicture,
-            aboutMe } = req.body;
-        const newHost = await createHost(
-            username,
-            password,
-            name,
-            email,
-            phoneNumber,
-            profilePicture,
-            aboutMe);
-
-        res.status(201).json(newHost);
-    } catch (error) {
+        if (!req.body.username || !req.body.password || !req.body.name || !req.body.email || !req.body.phoneNumber || !req.body.profilePicture || !req.body.aboutMe) {
+            res.status(400).json({ message: "Bad request" });
+        } else {
+            const {
+                username,
+                password,
+                name,
+                email,
+                phoneNumber,
+                profilePicture,
+                aboutMe } = req.body;
+            const newHost = await createHost(
+                username,
+                password,
+                name,
+                email,
+                phoneNumber,
+                profilePicture,
+                aboutMe);
+            if (newHost) {
+                res.status(201).json(newHost);
+            } else {
+                res.status(200).json("Cannot create host")
+            }
+        }
+    }
+    catch (error) {
         next(error);
     }
 });

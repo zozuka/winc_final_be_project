@@ -14,8 +14,12 @@ const createReview = async (userId, propertyId, rating, comment) => {
             comment
         }
     });
+    if (!review) {
+        return null;
+    } else {
 
-    return review;
+        return review;
+    }
 };
 
 export default createReview;

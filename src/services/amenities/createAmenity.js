@@ -8,7 +8,12 @@ const createAmenity = async (name) => {
         }
     });
 
-    return amenity;
+    if (!amenity) {
+        return null;
+    } else {
+
+        return amenity;
+    }
 };
 
 export default createAmenity;

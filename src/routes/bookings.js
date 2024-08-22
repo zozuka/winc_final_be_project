@@ -20,24 +20,31 @@ router.get("/", async (req, res, next) => {
 
 router.post("/", auth, async (req, res, next) => {
     try {
-        const {
-            userId,
-            propertyId,
-            checkinDate,
-            checkoutDate,
-            numberOfGuests,
-            totalPrice,
-            bookingStatus } = req.body;
-        const newBooking = await createBooking(
-            userId,
-            propertyId,
-            checkinDate,
-            checkoutDate,
-            numberOfGuests,
-            totalPrice,
-            bookingStatus);
-
-        res.status(201).json(newBooking);
+        if (!req.body.userId || !req.body.propertyId || !req.body.checkinDate || !req.body.checkoutDate || !req.body.numberOfGuests || !req.body.totalPrice || !req.body.bookingStatus) {
+            res.status(400).json("message: Bad request");
+        } else {
+            const {
+                userId,
+                propertyId,
+                checkinDate,
+                checkoutDate,
+                numberOfGuests,
+                totalPrice,
+                bookingStatus } = req.body;
+            const newBooking = await createBooking(
+                userId,
+                propertyId,
+                checkinDate,
+                checkoutDate,
+                numberOfGuests,
+                totalPrice,
+                bookingStatus);
+            if (newBooking) {
+                res.status(201).json(newBooking);
+            } else {
+                res.status(200).json("message: Cannot create booking");
+            }
+        }
     } catch (error) {
         next(error);
     }
